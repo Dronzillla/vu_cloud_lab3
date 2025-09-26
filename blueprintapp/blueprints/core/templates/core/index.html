@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block title %}Main page{% endblock %}
+{% block content %}
+<body>
+    <section class="container">
+
+        <h4>Laboratory assignment 1.A Requirements</h4>
+        <ul>
+            <li>Create MVC, MVU or MVVM architectural pattern driven web site</li>
+            <li>Site should allow creating, editing, viewing and deleting of at least one entity that is the main focus of business aplication (no persistence required)</li>
+            <li>Business entity should contain at least 4 editable properties</li>
+            <li>Implement validation for all editable properties in create and update scenarios</li>
+            <li>Demonstrate usage of DI+IOC</li>
+        </ul>
+
+        <h4>Laboratory assignment 1.B Requirements</h4>
+        <ul>
+            <li>Create Web service as API</li>
+            <li>Demonstrate 1 business entity creation, reading, editing, deleting, use 4 HTTP verbs (no persistence required)</li>
+            <li>Business entity should contain at least 4 editable properties</li>
+            <li>Unit tests for all API public contracts (100% coverage)</li>
+        </ul>
+        
+        <h4>Laboratory assignment 1.C Requirements</h4>
+        <ul>
+            <li>Implement DB layer by using ORM or plain SQL with Repository pattern</li>
+            <li>Demonstrate 1 business entity creation, reading, editing, deleting</li>
+            <li>Business entity should contain at least 4 editable properties</li>
+            <li>Integrate 1.A, 1.B and 1.C alltogether (website uses API to manipulate data, where API uses DB layer to manipulate data in database)</li>
+        </ul>
+            
+
+        <h4>Solution</h4>
+        <ul>
+            <li>I developed a web application using the MVC architectural pattern and the Flask web framework.</li>
+            <li>The application supports creating, editing, viewing, and deleting tasks.</li>
+            <li>Four task properties can be modified: title, description, due date, and completion status.</li>
+            <li>Data validation rules include: the title and due date cannot be blank, the title must contain non-numeric characters, and the due date cannot be in the past.</li>
+            <li>The database layer is implemented using SQLAlchemy ORM.</li>
+            <li>The application leverages an API to perform CRUD operations, with API routes also used on the front end.</li>
+            <li>The front end is built using the Jinja2 templating engine, without any additional front-end libraries.</li>
+            <li>Unit tests for all API routes were implemented using pytest, achieving 100% test coverage.</li>
+        </ul>
+
+        <h4>Author</h4>
+        <p>Dominykas Pošiūnas</p>
+    </section>
+</body>
+{% endblock %}

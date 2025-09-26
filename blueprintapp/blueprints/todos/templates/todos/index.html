@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block title %}Todos{% endblock %}
+{% block content %}
+<body>
+    
+    <section class="container">
+        
+        <div class="bg-primary text-center p-3 mb-4">
+            <h4 class="text-white">Create new to do list item</h4>
+            <form action="{{ url_for('todos.create') }}" method="get">
+                <button type="submit" class="btn btn-success mt-3">Create</button>
+            </form>
+        </div>
+        
+        <div>
+            <h3>To do list</h3>
+            <div class="mb-4">
+                <!-- Column headers -->
+                <div class="list-group-item d-flex justify-content-between align-items-center font-weight-bold">
+                    <div class="col-2">Title</div>
+                    <div class="col-5">Description</div>
+                    <div class="col-2">Due Date</div>
+                    <div class="col-1">Done</div>
+                    <div class="col-2">Actions</div>
+                </div>
+        
+                <!-- List items -->
+                <ul class="list-group">
+                    {% for todo in todos %}
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <div class="col-2">{{ todo.title }}</div>
+                            <div class="col-5">{{ todo.description }}</div>
+                            <div class="col-2">{{ todo.duedate }}</div>
+                            <div class="col-1">{{ todo.done }}</div>
+                            <div class="col-2">
+                                <a class="btn btn-primary btn-sm mx-1" href="{{ url_for('todos.update', tid=todo.tid) }}">Update</a>
+                                <a class="btn btn-danger btn-sm" href="{{ url_for('todos.delete', tid=todo.tid) }}">Delete</a>
+                            </div>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+        
+
+
+
+    </section>
+
+</body>
+{% endblock %}

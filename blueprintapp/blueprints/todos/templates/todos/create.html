@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block title %}Create new task{% endblock %}
+{% block content %}
+<body>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <form action="" method="post">
+                    {{ form.hidden_tag() }}
+                    <div>
+                        <h1 class="text-center">Create new to do item</h1>
+                    </div>
+                    <div class="mb-3">
+                        <label for="title">{{ form.title.label }}</label>
+                        {{ form.title(class_="form-control", size=32) }}
+                        {% for error in form.title.errors %}
+                        <span class="text-danger">[{{ error }}]</span>
+                        {% endfor %}
+                    </div>
+                    <div class="mb-3">
+                        <label for="description">{{ form.description.label }}</label>
+                        {{ form.description(class_="form-control", size=32) }}
+                        {% for error in form.description.errors %}
+                        <span class="text-danger">[{{ error }}]</span>
+                        {% endfor %}
+                    </div>
+                    <div class="mb-3">
+                        <label for="duedate">{{ form.duedate.label }}</label>
+                        {{ form.duedate(class_="form-control", size=32) }}
+                        {% for error in form.duedate.errors %}
+                        <span class="text-danger">[{{ error }}]</span>
+                        {% endfor %}
+                    </div>
+                    <div class="text-center">
+                        {{ form.submit(class_="btn btn-primary") }}
+                    </div>
+                </form>
+                
+                <div class="text-center mt-3">
+                    <span>Don't want to create a new task anymore?</span> 
+                    <a href="{{ url_for('todos.index') }}">Todos</a>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+    
+</body>
+{% endblock %}
