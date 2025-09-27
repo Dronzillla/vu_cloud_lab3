@@ -1,6 +1,6 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
-from flask_migrate import Migrate
+from flask_migrate import Migrate, upgrade
 
 
 # Dependency injection
@@ -24,13 +24,13 @@ def create_app(config_class="config.config.DevelopmentConfig"):
     app.register_blueprint(todos, url_prefix="/todos")
     app.register_blueprint(api, url_prefix="/api")
 
-    # migrate = Migrate(app, db)
+    migrate = Migrate(app, db)
     # To create db go to blueprintapp folder where app.py is
     # flask db init
     # flask db migrate
     # flask db upgrade
 
     with app.app_context():
-        db.create_all()
+        upgrade()
 
     return app
