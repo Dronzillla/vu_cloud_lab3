@@ -1,9 +1,9 @@
 from blueprintapp.app import create_app
 
 # For production
-# flask_app = create_app(config_class="config.config.ProductionConfig")
+flask_app = create_app(config_class="config.config.ProductionConfig")
 # For development
-flask_app = create_app()
+# flask_app = create_app()
 
 
 if __name__ == "__main__":
