@@ -1,6 +1,6 @@
 # Laboratory assignment 3
 
-This is a small web application project that I created while studying cloud computing course in the Master's program for Software Engineering at Vilnius University. I deployed this application using Render at (<https://render.com/>) using free to use cloud services.
+This is a small web application project that I created while studying cloud computing course in the Master's program for Software Engineering at Vilnius University. I deployed this application using Render at (<https://render.com/>) with free to use cloud services.
 
 ## Requirements
 
