@@ -20,9 +20,19 @@ class DevelopmentConfig(Config):
 class ProductionConfig(Config):
     DEBUG = False
     # Production DB will be provided via DATABASE_URL env variable
-    SQLALCHEMY_DATABASE_URI = os.getenv("DATABASE_URL")
-
+    # SQLALCHEMY_DATABASE_URI = os.getenv("DATABASE_URL")
     # SQLALCHEMY_ENGINE_OPTIONS = {"connect_args": {"sslmode": "require"}}
+
+    db_url = os.getenv("DATABASE_URL")
+    if db_url and db_url.startswith("postgres://"):
+        # Add sslmode=require if not already present
+        if "sslmode=" not in db_url:
+            if "?" in db_url:
+                db_url += "&sslmode=require"
+            else:
+                db_url += "?sslmode=require"
+
+    SQLALCHEMY_DATABASE_URI = db_url
 
 
 class TestingConfig(Config):
