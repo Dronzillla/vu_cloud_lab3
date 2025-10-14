@@ -22,7 +22,7 @@ class ProductionConfig(Config):
     # Production DB will be provided via DATABASE_URL env variable
     SQLALCHEMY_DATABASE_URI = os.getenv("DATABASE_URL")
 
-    SQLALCHEMY_ENGINE_OPTIONS = {"connect_args": {"sslmode": "require"}}
+    # SQLALCHEMY_ENGINE_OPTIONS = {"connect_args": {"sslmode": "require"}}
 
 
 class TestingConfig(Config):
