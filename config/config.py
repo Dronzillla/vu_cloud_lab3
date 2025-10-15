@@ -24,7 +24,12 @@ class ProductionConfig(Config):
     # SQLALCHEMY_ENGINE_OPTIONS = {"connect_args": {"sslmode": "require"}}
 
     db_url = os.getenv("DATABASE_URL")
-    if db_url and db_url.startswith("postgres://"):
+
+    if db_url:
+        # Fix postgres:// to postgresql:// for SQLAlchemy compatibility
+        if db_url.startswith("postgres://"):
+            db_url = db_url.replace("postgres://", "postgresql://", 1)
+
         # Add sslmode=require if not already present
         if "sslmode=" not in db_url:
             if "?" in db_url:
