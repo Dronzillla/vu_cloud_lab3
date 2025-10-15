@@ -1,4 +1,4 @@
-from flask import Blueprint, request
+from flask import Blueprint, request, jsonify
 from blueprintapp.app import db
 from blueprintapp.blueprints.api.models import Todo
 from blueprintapp.blueprints.api.db_operations import (
@@ -116,3 +116,25 @@ def delete_todo(tid):
 
     db_delete_todo(todo=todo)
     return jsend_success()
+
+
+@api.route("/debug/schema")
+def debug_schema():
+    from sqlalchemy import inspect, text
+
+    inspector = inspect(db.engine)
+
+    tables = inspector.get_table_names()
+    schema_info = {}
+
+    for table in tables:
+        columns = inspector.get_columns(table)
+        schema_info[table] = [col["name"] for col in columns]
+
+    # Also check row count
+    counts = {}
+    for table in tables:
+        result = db.session.execute(text(f"SELECT COUNT(*) FROM {table}"))
+        counts[table] = result.scalar()
+
+    return jsonify({"tables": tables, "schema": schema_info, "row_counts": counts}), 200
