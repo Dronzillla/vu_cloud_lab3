@@ -57,13 +57,44 @@ def get_todo(tid):
 
 
 # Create new todo
+# @api.route("/todos", methods=["POST"])
+# def create_todo():
+#     data = request.get_json()
+#     response = valid_title_and_duedate(data=data)
+#     if type(response) is not dict:
+#         return response
+
+#     # Create the new todo object
+#     new_todo = Todo(
+#         title=response.get("title"),
+#         description=data.get("description"),
+#         duedate=response.get("duedate"),
+#         done=data.get("done", False),
+#     )
+#     # TODO dependency injection?
+#     db_create_new_todo_obj(todo=new_todo, db_session=db.session)
+#     # TODO success follow delete patern? Maybe returning newly created todo object in the response?
+#     return jsend_success(status_code=201)
+
+
 @api.route("/todos", methods=["POST"])
 def create_todo():
+    import logging
+
+    logger = logging.getLogger(__name__)
+
+    logger.info("=== CREATE_TODO ENDPOINT HIT ===")
     data = request.get_json()
+    logger.info(f"Request data: {data}")
+
     response = valid_title_and_duedate(data=data)
+    logger.info(f"Validation response type: {type(response)}")
+
     if type(response) is not dict:
+        logger.warning(f"Validation failed, early return")
         return response
 
+    logger.info("Creating Todo object...")
     # Create the new todo object
     new_todo = Todo(
         title=response.get("title"),
@@ -71,8 +102,13 @@ def create_todo():
         duedate=response.get("duedate"),
         done=data.get("done", False),
     )
+    logger.info(f"Todo created: {new_todo.title}, {new_todo.duedate}")
+
     # TODO dependency injection?
-    db_create_new_todo_obj(todo=new_todo, db_session=db.session)
+    logger.info("Calling db_create_new_todo_obj...")
+    result = db_create_new_todo_obj(todo=new_todo, db_session=db.session)
+    logger.info(f"db_create_new_todo_obj returned: {result.tid if result else None}")
+
     # TODO success follow delete patern? Maybe returning newly created todo object in the response?
     return jsend_success(status_code=201)
 
