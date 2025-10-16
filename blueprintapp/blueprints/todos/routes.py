@@ -10,7 +10,9 @@ todos = Blueprint("todos", __name__, template_folder="templates")
 @todos.route("/")
 def index():
     # Call the API to fetch all todos
-    response = requests.get(url=url_for("api.get_todos", _external=True))
+    response = requests.get(
+        url=url_for("api.get_todos", _external=True, _scheme="https")
+    )
 
     # Handle the response from the API
     if response.status_code == 200:
@@ -27,75 +29,32 @@ def index():
     return render_template("todos/index.html", todos=sorted_todos)
 
 
-# @todos.route("/create", methods=["GET", "POST"])
-# def create():
-#     form = TodoForm()
-#     if form.validate_on_submit():  # POST request
-#         # Collect data from the form
-#         todo_data = {
-#             "title": form.title.data,
-#             "description": form.description.data,
-#             "duedate": form.duedate.data.isoformat(),
-#         }
-
-#         # Call the API to create the todo
-#         response = requests.post(
-#             url_for("api.create_todo", _external=True), json=todo_data
-#         )
-
-#         if response.status_code in [200, 201]:  # Accept both
-#             flash("New task was created.")
-#             return redirect(url_for("todos.index"))
-
-#         # if response.status_code == 201:
-#         #     flash("New task was created.")
-#         #     return redirect(url_for("todos.index"))
-#         else:
-#             # Display error messages from API response
-#             flash(f"Error: {response.json().get('error', 'Unknown error occurred.')}")
-
-#     # Render form on GET request or if validation fails
-#     return render_template("todos/create.html", form=form)
-
-
 @todos.route("/create", methods=["GET", "POST"])
 def create():
-    import logging
-
-    logger = logging.getLogger(__name__)
-
     form = TodoForm()
     if form.validate_on_submit():  # POST request
-        logger.info("=== FORM VALIDATED ===")
-
         # Collect data from the form
         todo_data = {
             "title": form.title.data,
             "description": form.description.data,
             "duedate": form.duedate.data.isoformat(),
         }
-        logger.info(f"Form data: {todo_data}")
 
         # Call the API to create the todo
-        # api_url = url_for("api.create_todo", _external=True)
+        response = requests.post(
+            url_for("api.create_todo", _external=True, _scheme="https"), json=todo_data
+        )
 
-        api_url = url_for("api.create_todo", _external=True, _scheme="https")
-        logger.info(f"API URL: {api_url}")
-        response = requests.post(api_url, json=todo_data)
-
-        logger.info(f"API Response Status: {response.status_code}")
-        logger.info(f"API Response Body: {response.text}")
-        logger.info(f"API Response JSON: {response.json()}")
-
-        if response.status_code == 201:
-            logger.info("SUCCESS - redirecting")
+        if response.status_code in [200, 201]:  # Accept both
             flash("New task was created.")
             return redirect(url_for("todos.index"))
+
+        # if response.status_code == 201:
+        #     flash("New task was created.")
+        #     return redirect(url_for("todos.index"))
         else:
-            logger.warning(f"FAILED - Status code: {response.status_code}")
-            error_msg = response.json().get("error", "Unknown error occurred.")
-            logger.warning(f"Error message: {error_msg}")
-            flash(f"Error: {error_msg}")
+            # Display error messages from API response
+            flash(f"Error: {response.json().get('error', 'Unknown error occurred.')}")
 
     # Render form on GET request or if validation fails
     return render_template("todos/create.html", form=form)
@@ -104,7 +63,9 @@ def create():
 @todos.route("/delete/<int:tid>")
 def delete(tid):
     # Call the API to delete the todo
-    response = requests.delete(url=url_for("api.delete_todo", tid=tid, _external=True))
+    response = requests.delete(
+        url=url_for("api.delete_todo", tid=tid, _external=True, _scheme="https")
+    )
 
     # Handle the response from the API
     if response.status_code == 404:
@@ -122,7 +83,9 @@ def delete(tid):
 def update(tid):
     form = UpdateForm()
     # Check if todo record exists by calling the get API
-    todo_response = requests.get(f"{url_for('api.get_todo', tid=tid, _external=True)}")
+    todo_response = requests.get(
+        f"{url_for('api.get_todo', tid=tid, _external=True, _scheme="https")}"
+    )
     todo_data = todo_response.json()
     print(todo_data)
 
@@ -140,7 +103,8 @@ def update(tid):
 
         # Call the update API
         response = requests.put(
-            f"{url_for('api.update_todo', tid=tid, _external=True)}", json=data
+            f"{url_for('api.update_todo', tid=tid, _external=True, _scheme="https")}",
+            json=data,
         )
 
         if response.status_code == 200:
