@@ -43,9 +43,13 @@ def create():
             url_for("api.create_todo", _external=True), json=todo_data
         )
 
-        if response.status_code == 201:
+        if response.status_code in [200, 201]:  # Accept both
             flash("New task was created.")
             return redirect(url_for("todos.index"))
+
+        # if response.status_code == 201:
+        #     flash("New task was created.")
+        #     return redirect(url_for("todos.index"))
         else:
             # Display error messages from API response
             flash(f"Error: {response.json().get('error', 'Unknown error occurred.')}")
