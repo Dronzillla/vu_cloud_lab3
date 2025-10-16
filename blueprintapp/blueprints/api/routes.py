@@ -138,3 +138,37 @@ def debug_schema():
         counts[table] = result.scalar()
 
     return jsonify({"tables": tables, "schema": schema_info, "row_counts": counts}), 200
+
+
+@api.route("/test/direct-create", methods=["GET"])
+def test_direct_create():
+    from datetime import datetime, timedelta
+
+    try:
+        test_todo = Todo(
+            title="Direct Test",
+            description="Testing direct creation",
+            duedate=datetime.now() + timedelta(days=1),
+            done=False,
+        )
+        db_create_new_todo_obj(todo=test_todo, db_session=db.session)
+
+        # Check if it exists
+        count = Todo.query.count()
+        found = Todo.query.filter_by(title="Direct Test").first()
+
+        return (
+            jsonify(
+                {
+                    "success": True,
+                    "created_tid": test_todo.tid,
+                    "found": found.tid if found else None,
+                    "total_count": count,
+                }
+            ),
+            200,
+        )
+    except Exception as e:
+        import traceback
+
+        return jsonify({"error": str(e), "traceback": traceback.format_exc()}), 500
