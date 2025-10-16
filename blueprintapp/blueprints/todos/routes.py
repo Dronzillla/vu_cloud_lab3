@@ -27,32 +27,74 @@ def index():
     return render_template("todos/index.html", todos=sorted_todos)
 
 
+# @todos.route("/create", methods=["GET", "POST"])
+# def create():
+#     form = TodoForm()
+#     if form.validate_on_submit():  # POST request
+#         # Collect data from the form
+#         todo_data = {
+#             "title": form.title.data,
+#             "description": form.description.data,
+#             "duedate": form.duedate.data.isoformat(),
+#         }
+
+#         # Call the API to create the todo
+#         response = requests.post(
+#             url_for("api.create_todo", _external=True), json=todo_data
+#         )
+
+#         if response.status_code in [200, 201]:  # Accept both
+#             flash("New task was created.")
+#             return redirect(url_for("todos.index"))
+
+#         # if response.status_code == 201:
+#         #     flash("New task was created.")
+#         #     return redirect(url_for("todos.index"))
+#         else:
+#             # Display error messages from API response
+#             flash(f"Error: {response.json().get('error', 'Unknown error occurred.')}")
+
+#     # Render form on GET request or if validation fails
+#     return render_template("todos/create.html", form=form)
+
+
 @todos.route("/create", methods=["GET", "POST"])
 def create():
+    import logging
+
+    logger = logging.getLogger(__name__)
+
     form = TodoForm()
     if form.validate_on_submit():  # POST request
+        logger.info("=== FORM VALIDATED ===")
+
         # Collect data from the form
         todo_data = {
             "title": form.title.data,
             "description": form.description.data,
             "duedate": form.duedate.data.isoformat(),
         }
+        logger.info(f"Form data: {todo_data}")
 
         # Call the API to create the todo
-        response = requests.post(
-            url_for("api.create_todo", _external=True), json=todo_data
-        )
+        api_url = url_for("api.create_todo", _external=True)
+        logger.info(f"Calling API: {api_url}")
 
-        if response.status_code in [200, 201]:  # Accept both
+        response = requests.post(api_url, json=todo_data)
+
+        logger.info(f"API Response Status: {response.status_code}")
+        logger.info(f"API Response Body: {response.text}")
+        logger.info(f"API Response JSON: {response.json()}")
+
+        if response.status_code == 201:
+            logger.info("SUCCESS - redirecting")
             flash("New task was created.")
             return redirect(url_for("todos.index"))
-
-        # if response.status_code == 201:
-        #     flash("New task was created.")
-        #     return redirect(url_for("todos.index"))
         else:
-            # Display error messages from API response
-            flash(f"Error: {response.json().get('error', 'Unknown error occurred.')}")
+            logger.warning(f"FAILED - Status code: {response.status_code}")
+            error_msg = response.json().get("error", "Unknown error occurred.")
+            logger.warning(f"Error message: {error_msg}")
+            flash(f"Error: {error_msg}")
 
     # Render form on GET request or if validation fails
     return render_template("todos/create.html", form=form)
