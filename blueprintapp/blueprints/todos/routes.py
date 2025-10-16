@@ -77,9 +77,10 @@ def create():
         logger.info(f"Form data: {todo_data}")
 
         # Call the API to create the todo
-        api_url = url_for("api.create_todo", _external=True)
-        logger.info(f"Calling API: {api_url}")
+        # api_url = url_for("api.create_todo", _external=True)
 
+        api_url = url_for("api.create_todo", _external=True, _scheme="https")
+        logger.info(f"API URL: {api_url}")
         response = requests.post(api_url, json=todo_data)
 
         logger.info(f"API Response Status: {response.status_code}")
