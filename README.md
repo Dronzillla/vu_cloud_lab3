@@ -17,7 +17,7 @@ This is a small web application project that I created while studying cloud comp
 - The front end is built using the Jinja2 templating engine, without any additional front-end libraries.
 - Unit tests for all API routes were implemented using pytest, achieving 100% test coverage.
 - The application was deployed using Railway's Web hosting service.
-- The database was hosted on Railway's free Postgre service.
+- The database was hosted on Railway's Postgre service.
 
 ## How to run this project locally
 
