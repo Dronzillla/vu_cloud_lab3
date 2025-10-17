@@ -1,6 +1,6 @@
-# Laboratory assignment 3
+# Laboratory assignment 4
 
-This is a small web application project that I created while studying cloud computing course in the Master's program for Software Engineering at Vilnius University. I deployed this application using Render at (<https://render.com/>) with free to use cloud services.
+This is a small web application project that I created while studying cloud computing course in the Master's program for Software Engineering at Vilnius University. I deployed this application using Railway at (<https://railway.com/>).
 
 ## Requirements
 
@@ -16,8 +16,8 @@ This is a small web application project that I created while studying cloud comp
 - The application leverages an API to perform CRUD operations, with API routes also used on the front end.
 - The front end is built using the Jinja2 templating engine, without any additional front-end libraries.
 - Unit tests for all API routes were implemented using pytest, achieving 100% test coverage.
-- The application was deployed using Render's Web hosting service.
-- The database was hosted on Render's free PostgreSQL service.
+- The application was deployed using Railway's Web hosting service.
+- The database was hosted on Railway's free Postgre service.
 
 ## How to run this project locally
 
@@ -54,10 +54,17 @@ This is a small web application project that I created while studying cloud comp
     docker-compose up -d
     ```
 
-6. **Run the application**:
+6. **Run database initialization and database migration**:
 
     ```sh
-    cd ../
+    flask db init
+    flask db migrate
+    flask db upgrade
+    ```
+
+7. **Run the application**:
+
+    ```sh
     python3 run.py
     ```
 

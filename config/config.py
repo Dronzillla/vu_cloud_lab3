@@ -19,10 +19,11 @@ class DevelopmentConfig(Config):
 
 class ProductionConfig(Config):
     DEBUG = False
-    # Production DB will be provided via DATABASE_URL env variable
+    # Default option for retrieving DB URI
     # SQLALCHEMY_DATABASE_URI = os.getenv("DATABASE_URL")
     # SQLALCHEMY_ENGINE_OPTIONS = {"connect_args": {"sslmode": "require"}}
 
+    # Another setup for retrieving DB URI, which requires sslmode communication
     db_url = os.getenv("DATABASE_URL")
 
     if db_url:
