@@ -1,6 +1,7 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
-from flask_migrate import Migrate, upgrade
+
+# from flask_migrate import Migrate, upgrade
 
 
 # Dependency injection
@@ -24,7 +25,7 @@ def create_app(config_class="config.config.DevelopmentConfig"):
     app.register_blueprint(todos, url_prefix="/todos")
     app.register_blueprint(api, url_prefix="/api")
 
-    migrate = Migrate(app, db)
+    # migrate = Migrate(app, db)
 
     # Locally run 'docker-compose up-d' command to run postgre from docker file
     # docker-compose down -v
@@ -37,7 +38,7 @@ def create_app(config_class="config.config.DevelopmentConfig"):
     # flask db upgrade
 
     # Option without database migrations
-    # with app.app_context():
-    #     db.create_all()
+    with app.app_context():
+        db.create_all()
 
     return app
