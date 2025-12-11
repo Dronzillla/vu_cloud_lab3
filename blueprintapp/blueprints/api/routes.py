@@ -73,8 +73,16 @@ def create_todo():
     )
     # TODO dependency injection?
     db_create_new_todo_obj(todo=new_todo, db_session=db.session)
-    # TODO success follow delete patern? Maybe returning newly created todo object in the response?
-    return jsend_success(status_code=201)
+
+    # Success follow get patern of returning newly created todo object in the response.
+    todo_data = {
+        "tid": new_todo.tid,
+        "title": new_todo.title,
+        "description": new_todo.description,
+        "duedate": new_todo.duedate.isoformat(),
+        "done": new_todo.done,
+    }
+    return jsend_success(data_key="todo", data_value=todo_data, status_code=201)
 
 
 # Update an existing todo
